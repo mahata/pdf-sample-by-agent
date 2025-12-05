@@ -7,6 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -34,8 +36,8 @@ class PdfControllerTest {
                 .getContentAsByteArray();
 
         // PDF files start with "%PDF" signature
-        assert result.length > 0;
-        String pdfHeader = new String(result, 0, Math.min(4, result.length));
-        assert pdfHeader.equals("%PDF");
+        assertTrue(result.length > 0, "PDF content should not be empty");
+        String pdfHeader = new String(result, 0, Math.min(4, result.length), java.nio.charset.StandardCharsets.US_ASCII);
+        assertEquals("%PDF", pdfHeader, "PDF should start with %PDF header");
     }
 }

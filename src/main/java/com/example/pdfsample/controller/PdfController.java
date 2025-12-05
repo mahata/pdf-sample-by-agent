@@ -2,6 +2,8 @@ package com.example.pdfsample.controller;
 
 import com.example.pdfsample.service.PdfGenerationService;
 import com.lowagie.text.DocumentException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,6 +16,7 @@ import java.io.IOException;
 @RestController
 public class PdfController {
 
+    private static final Logger logger = LoggerFactory.getLogger(PdfController.class);
     private final PdfGenerationService pdfGenerationService;
 
     public PdfController(PdfGenerationService pdfGenerationService) {
@@ -31,6 +34,7 @@ public class PdfController {
             
             return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
         } catch (IOException | DocumentException e) {
+            logger.error("Failed to generate PDF", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
