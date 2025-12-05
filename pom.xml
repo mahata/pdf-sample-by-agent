@@ -33,17 +33,12 @@
         </dependency>
 
         <!-- Flying Saucer for PDF generation -->
+        <!-- Note: Flying Saucer 9.7.2 uses OpenPDF 2.0.2 (a maintained fork of iText) -->
+        <!-- which does not have the XXE vulnerabilities present in old iText versions -->
         <dependency>
             <groupId>org.xhtmlrenderer</groupId>
             <artifactId>flying-saucer-pdf</artifactId>
             <version>9.7.2</version>
-        </dependency>
-
-        <!-- IText for PDF support (required by Flying Saucer) -->
-        <dependency>
-            <groupId>com.lowagie</groupId>
-            <artifactId>itext</artifactId>
-            <version>2.1.7</version>
         </dependency>
 
         <!-- Spring Boot Test -->
