@@ -26,10 +26,10 @@ public class PdfGenerationService {
     public void init() {
         // Load and cache the font file on service initialization
         try {
-            ClassPathResource fontResource = new ClassPathResource("fonts/NotoSansJP.ttf");
+            ClassPathResource fontResource = new ClassPathResource("fonts/NotoSansJP.otf");
             try (InputStream fontStream = fontResource.getInputStream()) {
                 byte[] fontBytes = fontStream.readAllBytes();
-                java.io.File tempFont = java.io.File.createTempFile("noto-sans-jp", ".ttf");
+                java.io.File tempFont = java.io.File.createTempFile("noto-sans-jp", ".otf");
                 tempFont.deleteOnExit();
                 Files.write(tempFont.toPath(), fontBytes);
                 cachedFontPath = tempFont.getAbsolutePath();
@@ -53,10 +53,10 @@ public class PdfGenerationService {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             ITextRenderer renderer = new ITextRenderer();
 
-            // Add Japanese font support using cached font path
+            // Add Japanese font support BEFORE setting document
             ITextFontResolver fontResolver = renderer.getFontResolver();
-            fontResolver.addFont(cachedFontPath, "sans-serif",
-                                BaseFont.IDENTITY_H, BaseFont.EMBEDDED, null);
+            // Register the font - it will be embedded and available for use
+            fontResolver.addFont(cachedFontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 
             renderer.setDocumentFromString(htmlContent);
             renderer.layout();
